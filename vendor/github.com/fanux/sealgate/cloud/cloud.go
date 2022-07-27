@@ -31,19 +31,19 @@ type Disk struct {
 //Request is the create vm request
 type Request struct {
 	//VM numbers
-	Num             int
-	Image           string
-	Flavor          string
-	NamePrefix      string
-	Passwd          string
-	KeyPair         string
-	FIP             bool
-	Disks           []Disk
-	ZoneID          string
-	VPCID           string // if not exist, create it
-	SwitchID        string // if not exist, create it
-	SecuretyGroupID string // if not exist, create it
-	ExternalArgs    map[string]string
+	Num          int
+	Image        string
+	Flavor       string
+	NamePrefix   string
+	Passwd       string
+	KeyPair      string
+	FIP          bool
+	Disks        []Disk
+	ZoneID       string
+	VPCID string         // if not exist, create it
+	SwitchID string   // if not exist, create it
+	SecuretyGroupID string  // if not exist, create it
+	ExternalArgs map[string]string
 }
 
 //VM is
@@ -59,17 +59,17 @@ type VM struct {
 
 //Response is
 type Response struct {
-	VPCID           string
-	SwitchID        string
+	VPCID string
+	SwitchID string
 	SecuretyGroupID string
-	VMs             []VM
+	VMs []VM
 }
 
 type Interface interface {
 	CreateNetwork(request Request) (*Response, error)
 	Create(request Request) (*Response, error)
 	Delete(...string) error
-	QueryFlavor(flavor string, zone string, charge string, strategy string) string
+	QueryFlavor(flavor string,zone string,charge string,strategy string) string
 }
 
 func NewProvider(config Config) Interface {

@@ -150,7 +150,7 @@ func (client Client) CreateBucket(bucketName string, options ...Option) error {
 
 // create bucket xml
 func (client Client) CreateBucketXml(bucketName string, xmlBody string, options ...Option) error {
-	buffer := new(bytes.Buffer)
+    buffer := new(bytes.Buffer)
 	buffer.Write([]byte(xmlBody))
 	contentType := http.DetectContentType(buffer.Bytes())
 	headers := map[string]string{}
@@ -159,9 +159,9 @@ func (client Client) CreateBucketXml(bucketName string, xmlBody string, options 
 	params := map[string]interface{}{}
 	resp, err := client.do("PUT", bucketName, params, headers, buffer, options...)
 	if err != nil {
-		return err
+	    return err
 	}
-
+	
 	defer resp.Body.Close()
 	return CheckRespCode(resp.StatusCode, []int{http.StatusOK})
 }

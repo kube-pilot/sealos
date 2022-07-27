@@ -16,6 +16,7 @@ package sshutil
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strings"
 
@@ -24,6 +25,10 @@ import (
 
 //Cmd is in host exec cmd
 func (ss *SSH) Cmd(host string, cmd string) []byte {
+	if ss.User != "root" && ss.Password != "" {
+		// to support sudo
+		cmd = fmt.Sprintf("echo %s|sudo -S %s", ss.Password, cmd)
+	}
 	logger.Info("[ssh][%s] %s", host, cmd)
 	session, err := ss.Connect(host)
 	defer func() {

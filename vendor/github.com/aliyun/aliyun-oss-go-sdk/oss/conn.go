@@ -540,7 +540,7 @@ func (conn Conn) isDownloadLimitResponse(resp *http.Response) bool {
 		return false
 	}
 
-	if strings.EqualFold(resp.Request.Method, "GET") {
+	if strings.EqualFold(resp.Request.Method,"GET") {
 		return true
 	}
 	return false

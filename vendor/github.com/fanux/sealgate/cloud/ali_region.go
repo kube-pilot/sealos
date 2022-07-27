@@ -2,9 +2,9 @@ package cloud
 
 type Flavor struct {
 	Region string
-	Zone   string
+	Zone string
 	VMType string //real cloud provider type
-	Image  string
+	Image string
 }
 
 //Region return real vm type on some region zone
@@ -13,5 +13,6 @@ type Flavor struct {
    output: ecs.c6.large m-j6c7cmqwpqwn8onaey27
 */
 type Region interface {
-	QueryFlavor(region string, zone string, vmType string) (Flavor, error)
+	QueryFlavor(region string, zone string, vmType string) (Flavor,error)
 }
+

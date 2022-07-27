@@ -26,8 +26,8 @@ import (
 	utilsexec "github.com/sealyun/lvscare/internal/exec"
 	"github.com/sealyun/lvscare/internal/sets"
 
-	"github.com/lithammer/dedent"
 	"github.com/sealyun/lvscare/internal/klog"
+	"github.com/lithammer/dedent"
 )
 
 // RequiredIPVSKernelModulesAvailableCheck tests IPVS required kernel modules.
