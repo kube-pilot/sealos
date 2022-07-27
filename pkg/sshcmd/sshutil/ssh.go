@@ -74,6 +74,10 @@ func readPipe(host string, pipe io.Reader, isErr bool) {
 }
 
 func (ss *SSH) CmdAsync(host string, cmd string) error {
+	if ss.User != "root" && ss.Password != "" {
+		// to support sudo
+		cmd = fmt.Sprintf("echo %s|sudo -S %s", ss.Password, cmd)
+	}
 	logger.Debug("[%s] %s", host, cmd)
 	session, err := ss.Connect(host)
 	if err != nil {
