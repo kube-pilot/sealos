@@ -32,7 +32,7 @@ func init() {
 }
 
 func (ss *SSH) sudo(cmd string) string {
-	return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && sudo -A bash -c '%s'",
+	return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && sudo -A bash -c \"%s\"",
 		sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, cmd)
 }
 
