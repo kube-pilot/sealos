@@ -69,11 +69,11 @@ func TestSSHCopyLocalToRemote(t *testing.T) {
 			}
 
 			if !fileExist(tt.args.localPath) {
-				logger.Error("local filepath is not exit")
+				logger.Error("local filepath is not exist")
 				return
 			}
 			if ss.IsFileExist(host, tt.args.remotePath) {
-				logger.Error("remote filepath is exit")
+				logger.Error("remote filepath is exist")
 				return
 			}
 			// test copy dir
