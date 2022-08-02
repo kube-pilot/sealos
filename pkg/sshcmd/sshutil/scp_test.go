@@ -27,10 +27,10 @@ func TestSSHCopyLocalToRemote(t *testing.T) {
 		remotePath string
 	}
 	var (
-		host = "192.168.160.243"
+		host = "127.0.0.1"
 		ssh  = SSH{
-			User:       "root",
-			Password:   "centos",
+			User:       "lllrrrccc",
+			Password:   "root888",
 			PkFile:     "",
 			PkPassword: "",
 			Timeout:    nil,
@@ -43,19 +43,19 @@ func TestSSHCopyLocalToRemote(t *testing.T) {
 	}{
 		{"test for copy file to remote server", ssh, args{
 			host,
-			"/home/louis/temp/01",
-			"/data/temp/01",
+			"/root/test.done",
+			"/data/test.done",
 		}},
 		{"test copy for file when local file is not exist", ssh, args{
 			host,
 			// local file  001 is not exist.
-			"/home/louis/temp/001",
-			"/data/temp/01",
+			"/root/test.done01",
+			"/data/test.done01",
 		}},
 		{"test copy dir to remote server", ssh, args{
 			host,
-			"/home/louis/temp",
-			"/data/temp01",
+			"/home/tmp",
+			"/data/tmp",
 		}},
 	}
 	for _, tt := range tests {
