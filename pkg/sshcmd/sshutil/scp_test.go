@@ -54,7 +54,7 @@ func TestSSHCopyLocalToRemote(t *testing.T) {
 		}},
 		{"test copy dir to remote server", ssh, args{
 			host,
-			"/home/tmp",
+			"/root/tmp",
 			"/data/tmp",
 		}},
 	}
