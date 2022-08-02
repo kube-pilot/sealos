@@ -18,16 +18,33 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/fanux/sealos/pkg/logger"
 )
+
+var sudoPass string // password file for sudo
+
+func init() {
+	sudoPass = fmt.Sprintf("/tmp/.%d.%d", rand.Int63(), time.Now().UnixNano())
+}
+
+func (ss *SSH) sudo(cmd string) string {
+	return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '!#/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && sudo -A bash -c '%s'",
+		sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, cmd)
+}
+
+func (ss *SSH) CleanSudo() {
+
+}
 
 //Cmd is in host exec cmd
 func (ss *SSH) Cmd(host string, cmd string) []byte {
 	if ss.User != "root" && ss.Password != "" {
 		// to support sudo
-		cmd = fmt.Sprintf("echo %s|sudo -S bash -c '%s'", ss.Password, cmd)
+		cmd = ss.sudo(cmd)
 	}
 	logger.Info("[ssh][%s] %s", host, cmd)
 	session, err := ss.Connect(host)
@@ -76,7 +93,7 @@ func readPipe(host string, pipe io.Reader, isErr bool) {
 func (ss *SSH) CmdAsync(host string, cmd string) error {
 	if ss.User != "root" && ss.Password != "" {
 		// to support sudo
-		cmd = fmt.Sprintf("echo %s|sudo -S bash -c '%s'", ss.Password, cmd)
+		cmd = ss.sudo(cmd)
 	}
 	logger.Debug("[%s] %s", host, cmd)
 	session, err := ss.Connect(host)
