@@ -63,7 +63,7 @@ func (ss *SSH) Md5Sum(host, remoteFilePath string) string {
 //Copy to ~/x.mov and then move to remoteFilePath
 func (ss *SSH) Copy(host, localFilePath, remoteFilePath string) {
 	sftpClient, err := ss.sftpConnect(host)
-	tmpFilePath := fmt.Sprintf("/home/%s/.%d.%d.mov", ss.User, rand.Int63(), time.Now().UnixNano())
+	tmpFilePath := fmt.Sprintf("/home/%s/.%d.%d.mov", ss.User, rand.Uint64(), time.Now().UnixNano())
 	defer func() {
 		if r := recover(); r != nil {
 			logger.Error("[ssh][%s]scpCopy: %s", host, err)
@@ -292,7 +292,7 @@ func (ss *SSH) CopyLocalToRemote(host, localPath, remotePath string) {
 	s, _ := os.Stat(localPath)
 	if s.IsDir() {
 		if ss.User != "root" {
-			remoteTmpPath := fmt.Sprintf("/home/%s/.%d.%d.dir", ss.User, rand.Int63(), time.Now().UnixNano())
+			remoteTmpPath := fmt.Sprintf("/home/%s/.%d.%d.dir", ss.User, rand.Uint64(), time.Now().UnixNano())
 			ss.copyLocalDirToRemote(host, sshClient, sftpClient, localPath, remoteTmpPath)
 			ss.Cmd(host, fmt.Sprintf("mv %s %s;", remoteTmpPath, remotePath))
 			ss.Cmd(host, fmt.Sprintf("chown root:root %s", remotePath))
@@ -301,7 +301,7 @@ func (ss *SSH) CopyLocalToRemote(host, localPath, remotePath string) {
 		}
 	} else {
 		if ss.User != "root" {
-			remoteTmpFile := fmt.Sprintf("/home/%s/.%d.%d.mov", ss.User, rand.Int63(), time.Now().UnixNano())
+			remoteTmpFile := fmt.Sprintf("/home/%s/.%d.%d.mov", ss.User, rand.Uint64(), time.Now().UnixNano())
 			ss.copyLocalFileToRemote(host, sshClient, sftpClient, localPath, remoteTmpFile)
 			baseRemoteFilePath := filepath.Dir(remotePath)
 			mkDstDir := fmt.Sprintf("mkdir -p %s; mv %s %s", baseRemoteFilePath, remoteTmpFile, remotePath)
