@@ -28,12 +28,19 @@ import (
 var sudoPass string // password file for sudo
 
 func init() {
-	sudoPass = fmt.Sprintf("/tmp/.%d.%d", rand.Int63(), time.Now().UnixNano())
+	sudoPass = fmt.Sprintf("/tmp/.%d.%d", rand.Uint64(), time.Now().UnixNano())
 }
 
 func (ss *SSH) sudo(cmd string) string {
-	return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && sudo -A bash -c \"%s\"",
-		sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, strings.ReplaceAll(cmd, "\"", "\\\""))
+	if strings.Index(cmd, "$(") >= 0 {
+		// includes sub cmd
+		tmpSH := fmt.Sprintf("/tmp/.%d.sh", rand.Uint64())
+		return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && echo \"%s\" >%s && sudo -A sh %s",
+			sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, cmd, tmpSH, tmpSH)
+	} else {
+		return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && sudo -A bash -c \"%s\"",
+			sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, strings.ReplaceAll(cmd, "\"", "\\\""))
+	}
 }
 
 func (ss *SSH) CleanSudo() {
