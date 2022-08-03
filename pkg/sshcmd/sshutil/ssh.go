@@ -42,7 +42,6 @@ func (ss *SSH) sudo(cmd string) string {
 			sudoPass, sudoPass, ss.Password, sudoPass, sudoPass, sudoPass, strings.ReplaceAll(cmd, "\"", "\\\""))
 	}
 }
-
 func (ss *SSH) CleanSudo() {
 
 }
