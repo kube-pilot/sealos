@@ -32,7 +32,7 @@ func init() {
 }
 
 func (ss *SSH) sudo(cmd string) string {
-	if strings.Index(cmd, "$(") >= 0 {
+	if strings.Index(cmd, "$(") >= 0 || strings.Index(cmd, "\n") >= 0 {
 		// includes sub cmd
 		tmpSH := fmt.Sprintf("/tmp/.%d.sh", rand.Uint64())
 		return fmt.Sprintf("ls %s >/dev/null 2>&1 || (echo '#!/bin/sh' >%s && echo 'echo %s' >>%s && chmod +x %s) && export SUDO_ASKPASS=%s && echo '%s' >%s && sudo -A sh %s",
